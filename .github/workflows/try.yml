@@ -1,0 +1,40 @@
+name: Build DLL
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up CMake
+      uses: jwlawson/actions-wait-on-ci@v1.0.0
+      with:
+        cmake-version: '3.21.1'
+
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -G "Visual Studio 16 2019" -A x64
+
+    - name: Build
+      run: |
+        cd build
+        cmake --build . --config Release
+
+    - name: Archive DLL
+      uses: actions/upload-artifact@v3
+      with:
+        name: my-dll
+        path: build/Release/*.dll

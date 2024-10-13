@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up CMake
-      uses: jwlawson/actions-wait-on-ci@v1.0.0
+      uses: actions/setup-cmake@v2
       with:
         cmake-version: '3.21.1'
 
@@ -26,15 +26,4 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -G "Visual Studio 16 2019" -A x64
-
-    - name: Build
-      run: |
-        cd build
-        cmake --build . --config Release
-
-    - name: Archive DLL
-      uses: actions/upload-artifact@v3
-      with:
-        name: my-dll
-        path: build/Release/*.dll
+        cmake .. -G "

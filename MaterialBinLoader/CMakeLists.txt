@@ -2,37 +2,27 @@ cmake_minimum_required(VERSION 3.21)
 
 project(MaterialBinLoader)
 
-# Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Set build type to Release by default
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
-endif()
+set(CMAKE_BUILD_TYPE Release)
 
-# Collect source files
 file(GLOB_RECURSE SRC_FILES_DIR
-    "${PROJECT_SOURCE_DIR}/*.c"
-    "${PROJECT_SOURCE_DIR}/*.cpp"
-    "${PROJECT_SOURCE_DIR}/*.h"
-    "${PROJECT_SOURCE_DIR}/Hook/*.c"
-    "${PROJECT_SOURCE_DIR}/Hook/*.cpp"
-    "${PROJECT_SOURCE_DIR}/Hook/*.h"
+    ${PROJECT_SOURCE_DIR}/*.c
+    ${PROJECT_SOURCE_DIR}/*.cpp
+    ${PROJECT_SOURCE_DIR}/*.h
+    ${PROJECT_SOURCE_DIR}/Hook/*.c
+    ${PROJECT_SOURCE_DIR}/Hook/*.cpp
+    ${PROJECT_SOURCE_DIR}/Hook/*.h
 )
 
-# Include directories
 include_directories(
-    "${CMAKE_SOURCE_DIR}/include"
+    ${CMAKE_SOURCE_DIR}/include
 )
 
-# Link directories
 link_directories(
-    "${CMAKE_SOURCE_DIR}/lib"
+    ${CMAKE_SOURCE_DIR}/lib
 )
 
-# Add compile definitions
 add_definitions(
     -D"NDEBUG"
     -D"NOMINMAX"
@@ -47,7 +37,6 @@ add_definitions(
     -D"_WINDOWS"
 )
 
-# Add compile options
 add_compile_options(
     /diagnostics:column
     /EHsc
@@ -62,7 +51,6 @@ add_compile_options(
     /Zi
 )
 
-# Add link options
 add_link_options(
     /DEBUG
     /DLL
@@ -77,15 +65,8 @@ add_link_options(
     /SUBSYSTEM:CONSOLE
 )
 
-# Create shared library
 add_library(MaterialBinLoader SHARED ${SRC_FILES_DIR})
 
-# Link with Detours library
 target_link_libraries(MaterialBinLoader
     "${CMAKE_SOURCE_DIR}/lib/detours.lib"
-)
-
-# Specify output directory for the DLL
-set_target_properties(MaterialBinLoader PROPERTIES
-    OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Release"
 )
